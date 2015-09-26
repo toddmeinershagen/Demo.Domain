@@ -26,7 +26,6 @@ namespace Demo.Domain
         /// </value>
         public string LastName { get; set; }
 
-
         /// <summary>
         /// Custom object-level validation
         /// </summary>
