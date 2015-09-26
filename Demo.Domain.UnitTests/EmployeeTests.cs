@@ -1,4 +1,8 @@
-﻿using NUnit.Framework;
+﻿using System;
+
+using FluentAssertions;
+
+using NUnit.Framework;
 
 namespace Demo.Domain.UnitTests
 {
@@ -6,21 +10,25 @@ namespace Demo.Domain.UnitTests
     public class EmployeeTests
     {
         [Test]
-        public void TestFailure()
+        public void given_employee_without_firstname_when_checking_isvalid_should_be_false()
         {
             var employee = new Employee();
-            Assert.That(employee.IsValid(), Is.False);
+            employee.IsValid()
+                .Should()
+                .BeFalse();
         }
 
         [Test]
-        public void TestSuccess()
+        public void given_employee_with_firstname_when_checking_isvalid_should_be_true()
         {
-            var employee = new Employee{FirstName = "Todd"};
-            Assert.That(employee.IsValid(), Is.True);
+            var employee = new Employee { FirstName = "Todd" };
+            employee.IsValid()
+                .Should()
+                .BeTrue();
         }
 
         [Test]
-        public void TestCustomCheck()
+        public void given_employee_with_long_firstname_and_lastname_when_validating_should_return_error_about_full_name_being_too_long()
         {
             var employee = new Employee
             {
@@ -28,8 +36,9 @@ namespace Demo.Domain.UnitTests
                 LastName = "ToddMeinershagenToddMeinershagenToddMeinershagen"
             };
 
-            Assert.That(employee.IsValid(), Is.False);
-            Assert.That(employee.Validate()[0].ErrorMessage, Is.EqualTo("The full name must not be longer than 100 characters."));
+            employee.Validate()
+                .Should()
+                .Contain(x => x.ErrorMessage == "The full name must not be longer than 100 characters.");
         }
     }
 }
