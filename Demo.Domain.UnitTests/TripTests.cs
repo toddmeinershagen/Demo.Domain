@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 using FluentAssertions;
 
@@ -12,8 +14,10 @@ namespace Demo.Domain.UnitTests
         [Test]
         public void given_trip_with_date_not_after_today_when_checking_is_valid_should_be_false()
         {
+	        var results = new List<ValidationResult>();
             var trip = new Trip { Date = 23.November(1972) };
-            trip.Validate().Should().NotBeEmpty();
+            trip.TryValidate(results).Should().BeFalse();
+	        results.Should().NotBeEmpty();
         }
 
         [Test]

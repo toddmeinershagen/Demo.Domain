@@ -1,4 +1,7 @@
-﻿using FluentAssertions;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+
+using FluentAssertions;
 
 using NUnit.Framework;
 
@@ -34,8 +37,11 @@ namespace Demo.Domain.UnitTests
                 LastName = "ToddMeinershagenToddMeinershagenToddMeinershagen"
             };
 
-            employee.Validate()
-                .Should()
+	        var results = new List<ValidationResult>();
+            employee.TryValidate(results)
+                .Should().BeFalse();
+
+			results.Should()
                 .Contain(x => x.ErrorMessage == "The full name must not be longer than 100 characters.");
         }
     }

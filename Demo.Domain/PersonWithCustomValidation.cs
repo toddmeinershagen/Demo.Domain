@@ -15,12 +15,12 @@ namespace Demo.Domain
 
         public bool IsValid()
         {
-            return Validate().Any() == false;
+	        return TryValidate();
         }
 
-        public IEnumerable<ValidationResult> Validate()
+        public bool TryValidate(ICollection<ValidationResult> results = null)
         {
-            var results = new List<ValidationResult>();
+	        results = results ?? new List<ValidationResult>();
 
             if (FirstName == null)
             {
@@ -51,7 +51,7 @@ namespace Demo.Domain
                 results.Add(new ValidationResult("EmailAddress must be a valid email address"));
             }
 
-            return results;
+	        return results.Any() == false;
         }
     }
 }

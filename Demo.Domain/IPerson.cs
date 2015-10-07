@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace Demo.Domain
@@ -14,6 +15,6 @@ namespace Demo.Domain
 
         bool IsValid();
 
-        IEnumerable<ValidationResult> Validate();
+        bool TryValidate(ICollection<ValidationResult> results = null);
     }
 }

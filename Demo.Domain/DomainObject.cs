@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 
 namespace Demo.Domain
 {
@@ -17,8 +17,7 @@ namespace Demo.Domain
         /// <returns></returns>
         public bool IsValid()
         {
-            var results = Validate();
-            return results.Any() == false;
+            return TryValidate();
         }
 
         /// <summary>
@@ -28,13 +27,18 @@ namespace Demo.Domain
         /// This is the more comprehensive version of validation that returns a list of the error messages.
         /// </remarks>
         /// <returns></returns>
-        public IEnumerable<ValidationResult> Validate()
+        public void Validate()
         {
-            var context = new ValidationContext(this, null, null);
-            var results = new List<ValidationResult>();
-            Validator.TryValidateObject(this, context, results, true);
-
-            return results;
+			var context = new ValidationContext(this);
+			Validator.ValidateObject(this, context, true);
         }
+
+	    public bool TryValidate(ICollection<ValidationResult> results = null)
+	    {
+		    results = results ?? new Collection<ValidationResult>();
+			var context = new ValidationContext(this);
+			return Validator.TryValidateObject(this, context, results, true);
+	    }
+
     }
 }
