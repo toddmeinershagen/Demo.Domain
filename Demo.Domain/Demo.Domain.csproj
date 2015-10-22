@@ -45,6 +45,7 @@
     <Compile Include="AfterTodayAttribute.cs" />
     <Compile Include="GuarantorWithGlobalResources.cs" />
     <Compile Include="IPerson.cs" />
+    <Compile Include="Parent.cs" />
     <Compile Include="PersonWithBuiltInValidation.cs" />
     <Compile Include="PersonWithCustomValidation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -7,8 +7,33 @@ using System.Text;
 
 namespace Demo.Domain
 {
-    public abstract class Entity
-    {
+	public interface IEntity
+	{
+		/// <summary>
+		/// Determines whether this instance is valid.
+		/// </summary>
+		/// <remarks>
+		/// This is a simple validation method that just returns a true/false without any error details.
+		/// </remarks>
+		/// <remarks>
+		/// </remarks>
+		/// <returns></returns>
+		bool IsValid();
+
+		/// <summary>
+		/// Validates this instance.
+		/// </summary>
+		/// <remarks>
+		/// This is the more comprehensive version of validation that returns a list of the error messages.
+		/// </remarks>
+		/// <returns></returns>
+		void Validate();
+
+		bool TryValidate(ICollection<ValidationResult> results = null);
+	}
+
+	public abstract class Entity : IEntity
+	{
         /// <summary>
         /// Determines whether this instance is valid.
         /// </summary>
@@ -39,7 +64,7 @@ namespace Demo.Domain
 	        throw new EntityValidationException(results);
         }
 
-	    public bool TryValidate(ICollection<ValidationResult> results = null)
+	    public virtual bool TryValidate(ICollection<ValidationResult> results = null)
 	    {
 		    results = results ?? new Collection<ValidationResult>();
 			var context = new ValidationContext(this);
