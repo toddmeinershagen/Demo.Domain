@@ -40,10 +40,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Address.cs" />
+    <Compile Include="Car.cs" />
+    <Compile Include="Child.cs" />
     <Compile Include="Entity.cs" />
     <Compile Include="Employee.cs" />
     <Compile Include="AfterTodayAttribute.cs" />
     <Compile Include="GuarantorWithGlobalResources.cs" />
+    <Compile Include="ICar.cs" />
     <Compile Include="IPerson.cs" />
     <Compile Include="Parent.cs" />
     <Compile Include="PersonWithBuiltInValidation.cs" />
