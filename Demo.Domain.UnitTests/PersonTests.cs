@@ -37,12 +37,17 @@ namespace Demo.Domain.UnitTests
 		    };
 
 			Action action = complexPerson.Validate;
-		    var ex = action
-			    .ShouldThrow<ValidationException>()
-			    .WithMessage("FirstName must be at least 1 character and no more than 50 characters")
+		    action
+			    .ShouldThrow<AggregateException>()
+				.WithMessage("FirstName must be at least 1 character and no more than 50 characters\r\nThe LastName field is required.\r\nEmailAddress must be a valid email address.\r\n")
 			    .And
-			    .ValidationResult.ErrorMessage.Should()
-			    .Be("FirstName must be at least 1 character and no more than 50 characters");
+			    .InnerExceptions
+			    .Should()
+			    .Contain(ex => ex.Message == "FirstName must be at least 1 character and no more than 50 characters")
+			    .And
+				.Contain(ex => ex.Message == "The LastName field is required.")
+				.And
+				.Contain(ex => ex.Message == "EmailAddress must be a valid email address.");
 	    }
 
         [Test]

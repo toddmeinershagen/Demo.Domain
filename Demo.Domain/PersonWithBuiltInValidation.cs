@@ -2,7 +2,7 @@
 
 namespace Demo.Domain
 {
-    public class PersonWithBuiltInValidation : DomainObject, IPerson
+    public class PersonWithBuiltInValidation : Entity, IPerson
     {
         [Required]
         [StringLength(50, MinimumLength = 1, ErrorMessage = "{0} must be at least {2} character and no more than {1} characters")]

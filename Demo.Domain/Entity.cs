@@ -1,10 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Text;
 
 namespace Demo.Domain
 {
-    public abstract class DomainObject
+    public abstract class Entity
     {
         /// <summary>
         /// Determines whether this instance is valid.
@@ -29,8 +32,11 @@ namespace Demo.Domain
         /// <returns></returns>
         public void Validate()
         {
-			var context = new ValidationContext(this);
-			Validator.ValidateObject(this, context, true);
+	        var results = new List<ValidationResult>();
+
+	        if (TryValidate(results)) return;
+
+	        throw new EntityValidationException(results);
         }
 
 	    public bool TryValidate(ICollection<ValidationResult> results = null)
@@ -41,4 +47,28 @@ namespace Demo.Domain
 	    }
 
     }
+
+	public class EntityValidationException : AggregateException
+	{
+		public EntityValidationException(IEnumerable<ValidationResult> results)
+			: base(GetMessage(results), GetExceptions(results))
+		{
+		}
+
+		private static string GetMessage(IEnumerable<ValidationResult> results)
+		{
+			var messageBuilder = new StringBuilder();
+			results.ToList().ForEach(r => messageBuilder.AppendFormat("{0}\r\n", r.ErrorMessage));
+
+			return messageBuilder.ToString();
+		}
+
+		private static IEnumerable<Exception> GetExceptions(IEnumerable<ValidationResult> results)
+		{
+			var exceptions = new List<ValidationException>();
+			results.ToList().ForEach(r => exceptions.Add(new ValidationException(r.ErrorMessage)));
+
+			return exceptions;
+		}
+	}
 }

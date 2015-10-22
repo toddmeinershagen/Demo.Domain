@@ -7,7 +7,7 @@ namespace Demo.Domain
     /// Represents an employee.
     /// </summary>
     [CustomValidation(typeof(Employee), "CustomValidation")]
-    public class Employee : DomainObject
+    public class Employee : Entity
     {
         /// <summary>
         /// Gets or sets the first name.
